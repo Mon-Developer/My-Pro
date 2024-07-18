@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>U & WE - Tensei Diary In Mirrors</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header,
+        footer {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            flex-shrink: 0;
+        }
+        
+        header h1,
+        header h2 {
+            margin: 0;
+            font-family: Algerian, sans-serif;
+        }
+        
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        section {
+            margin-bottom: 40px;
+        }
+        
+        h1,
+        h2 {
+            margin-bottom: 20px;
+        }
+        
+        p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        nav a {
+            display: inline-block;
+            margin-right: 15px;
+            color: black;
+            text-decoration: none;
+        }
+        
+        nav a:hover {
+            text-decoration: underline;
+        }
+        
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .category {
+            flex: 1 1 calc(33.333% - 20px);
+            text-align: center;
+            padding: 60px 20px;
+            border-radius: 8px;
+            color: white;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .category a {
+            color: white;
+            font-size: 1.5em;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        /* Sidebar Styles */
+        
+        #menuToggle {
+            display: block;
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            z-index: 1;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        #menuToggle input {
+            display: block;
+            width: 40px;
+            height: 32px;
+            position: absolute;
+            top: -7px;
+            left: -5px;
+            cursor: pointer;
+            opacity: 0;
+            z-index: 2;
+            -webkit-touch-callout: none;
+        }
+        
+        #menuToggle span {
+            display: block;
+            width: 33px;
+            height: 4px;
+            margin-bottom: 5px;
+            position: relative;
+            background: #cdcdcd;
+            border-radius: 3px;
+            z-index: 1;
+            transform-origin: 4px 0px;
+            transition: transform 0.2s cubic-bezier(0.77, 0.2, 0.05, 1.0), background 0.2s cubic-bezier(0.77, 0.2, 0.05, 1.0), opacity 0.2s ease;
+        }
+        
+        #menuToggle span:first-child {
+            transform-origin: 0% 0%;
+        }
+        
+        #menuToggle span:nth-last-child(2) {
+            transform-origin: 0% 100%;
+        }
+        
+        #menuToggle input:checked~span {
+            opacity: 1;
+            transform: rotate(45deg) translate(-2px, -1px);
+            background: #232323;
+        }
+        
+        #menuToggle input:checked~span:nth-last-child(2) {
+            opacity: 0;
+            transform: rotate(0deg) scale(0.2, 0.2);
+        }
+        
+        #menuToggle input:checked~span:nth-last-child(1) {
+            transform: rotate(-45deg) translate(0, -1px);
+        }
+        
+        #menu {
+            position: fixed;
+            width: 300px;
+            height: 100%;
+            margin: 100px 0 0 -50px;
+            padding: 50px 50px;
+            padding-top: 125px;
+            background: white;
+            list-style-type: none;
+            -webkit-font-smoothing: antialiased;
+            transform-origin: 0% 0%;
+            transform: translate(-100%, 0);
+            transition: transform 0.2s cubic-bezier(0.77, 0.2, 0.05, 1.0);
+        }
+        
+        #menu li {
+            padding: 10px 0;
+            font-size: 22px;
+        }
+        
+        #menuToggle input:checked~ul {
+            transform: none;
+        }
+        
+        #menu a {
+            color: black;
+            text-decoration: none;
+            font-family: Algerian, sans-serif;
+        }
+        
+        #menu a:hover {
+            color: #007bff;
+        }
+        
+        .welcome-section {
+            background: url('https://via.placeholder.com/1000x400') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            font-family: Algerian, sans-serif;
+            margin-bottom: 40px;
+        }
+        
+        .welcome-section p {
+            font-size: 1.5em;
+        }
+        
+        .highlight {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        
+        .highlight p {
+            font-size: 1.2em;
+        }
+        
+        .highlight img {
+            max-width: 40%;
+            border-radius: 8px;
+        }
+        
+        .search-main {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="menuToggle">
+        <input type="checkbox" />
+        <span></span>
+        <span></span>
+        <span></span>
+
+        <ul id="menu">
+            <li><a href="#">Home</a></li>
+            <li><a href="Search.html">SEARCH...</a></li>
+            <li><a href="#">Booklist</a></li>
+            <li><a href="C:\Users\91977\OneDrive\Desktop\new\settings.html">Settings</a></li>
+            <li><a href="#">Writer</a></li>
+            <li><a href="#">Notification</a></li>
+        </ul>
+    </div>
+
+    <header>
+        <h1>U & WE </h1>
+        <h2>Tensei Diary In Mirrors</h2>
+    </header>
+
+    <div. class="container">
+        <section class="welcome-section">
+            <p>Welcome to the world of creation. Create your own story here; Become Legend!</p>
+        </section>
+
+        <section>
+            <h2>Featured Books</h2>
+            <div class="category-list">
+                <div class="category" style="background-image: url('https://via.placeholder.com/400x300');">
+                    <a href="#">Book Title 1</a>
+                </div>
+                <div class="category" style="background-image: url('https://via.placeholder.com/400x300');">
+                    <a href="#">Book Title 2</a>
+                </div>
+                <div class="category" style="background-image: url('https://via.placeholder.com/400x300');">
+                    <a href="#">Book Title 3</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Featured Novels</h2>
+            <div class="category-list">
+                <div class="category" style="background-image: url('https://via.placeholder.com/400x300');">
+                    <a href="#">Novel Title 1</a>
+                </div>
+                <div class="category" style="background-image: url('https://via.placeholder.com/400x300');">
+                    <a href="#">Novel Title 2</a>
+                </div>
+                <div class="category" style="background-image: url('https://via.placeholder.com/400x300');">
+                    <a href="#">Novel Title 3</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="highlight">
+            <div>
+                <h2>Make Your Own Story</h2>
+                <p>Start your journey in the world of stories and share your creativity with others. Your imagination is the only limit. Become a legend in your own right by crafting stories that captivate and inspire!</p>
+            </div>
+            <img src="https://via.placeholder.com/400x300" alt="Make Your Own Story">
+        </section>
+
+        <section class="highlight">
+            <img src="https://via.placeholder.com/400x300" alt="About Us">
+            <div>
+                <h2>About Us</h2>
+                <p>U&Jin is here to support you in creating a world of your own making. Welcome to our world of creation. Create your own legend and share your stories with the world. Participate in events, win prizes, and let your creativity shine. You
+                    are the creator of your destiny here.</p>
+            </div>
+        </section>
+        </div>
+        <div class="search-main">
+            <a class="searhch_1" href="Search.html">SEARCH</a>
+            <a href="writer.html">WRITER</a>
+
+            <a href="booklist.html">BOOkLISTS</a>
+
+
+        </div>
+
+        <footer>
+            <p>&copy; 2024 U&Jin. All rights reserved.</p>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+
+</html>
